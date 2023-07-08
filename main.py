@@ -1,5 +1,7 @@
 import sys
+import click
 from config import STYLES, BIASES, WIDTH
+
 if len(sys.argv) < 3:
     print("Usage: python main.py <path/to/text/file.txt> img/<name of output file>.svg")
 else:
