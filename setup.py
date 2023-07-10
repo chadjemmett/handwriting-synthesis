@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 setup(
-        name="scribble",
+        name="handwriting-synthesit",
         version="0.0.1",
         packages=find_packages(),
         install_requires=[
@@ -65,9 +65,5 @@ setup(
             "urllib3==1.26.16",
             "Werkzeug==2.3.6",
             "wrapt==1.14.1",
-    ],
-    entry_points='''
-    [console_scripts]
-    scribble=handwriting_synthesis.main:scribble
-    ''',
-        )
+    ]
+)
