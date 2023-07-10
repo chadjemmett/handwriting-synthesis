@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 setup(
-        name="handwriting-synthesit",
+        name="handwriting_synthesis",
         version="0.0.1",
         packages=find_packages(),
         install_requires=[
