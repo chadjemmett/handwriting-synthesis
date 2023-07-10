@@ -1,14 +1,36 @@
 import sys
+import os
+import platform
+import click
+import numpy as np
 from config import STYLES, BIASES, WIDTH
-if len(sys.argv) < 3:
-    print("Usage: python main.py <path/to/text/file.txt> img/<name of output file>.svg")
+
+
+if platform.system == "Windows":
+    desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
 else:
-    import numpy as np
+    desktop = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')
+
+
+
+
+@click.command()
+@click.option('--bias', default=.75, help="The default is .75. That seems to work. Experiment with other numbers, I dunno.")
+@click.option('--width', default=1, help="Default is 1. This is the width of the pen stroke.")
+@click.option('--style', default=3, help="This is the various styles of writing. The options are 1 - 9")
+@click.argument('input_file')
+@click.argument('output_file', default=f"{desktop}/scribble.svg")
+
+
+def scribble(input_file, output_file, bias, width, style):
+    """
+        Usage: scribble [OPTIONS] source_file.txt output_file_name.svg
+
+        INPUT_FILE: This is the path to the text file with the message you want to write.
+        OUTPUT_FILE: This is the path where you want to write the SVG file.
+    """
     from handwriting_synthesis import Hand
-
-    input_file = sys.argv[1]
-    output_file = sys.argv[2]
-
+    hand = Hand()
     file = open(input_file, 'r')
 
     raw_text = ""
@@ -17,21 +39,29 @@ else:
 
     lines = raw_text.split("\n")
 
-    if __name__ == '__main__':
-        hand = Hand()
+# usage demo
+    biases = [bias for i in lines]
+    styles = [style for i in lines]
+    stroke_colors = ['black' for i in lines]
+    stroke_widths = [width for i in lines]
 
-    # usage demo
-        biases = [BIASES for i in lines]
-        styles = [STYLES for i in lines]
-        stroke_colors = ['black' for i in lines]
-        stroke_widths = [WIDTH for i in lines]
-
-        hand.write(
-            filename=f'img/{output_file}',
-            lines=lines,
-            biases=biases,
-            styles=styles,
-            stroke_colors=stroke_colors,
-            stroke_widths=stroke_widths
-        )
+    hand.write(
+        filename=output_file,
+        lines=lines,
+        biases=biases,
+        styles=styles,
+        stroke_colors=stroke_colors,
+        stroke_widths=stroke_widths
+    )
     file.close()
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    scribble()
+
+
